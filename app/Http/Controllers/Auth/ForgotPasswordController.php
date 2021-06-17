@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
+use Inertia\Inertia;
 
 class ForgotPasswordController extends Controller
 {
@@ -18,5 +19,29 @@ class ForgotPasswordController extends Controller
     |
     */
 
-    use SendsPasswordResetEmails;
+    use SendsPasswordResetEmails{
+        sendResetLinkEmail as public traitSendPasswordResetEmails;
+    }
+
+    /**
+     * Display the form to request a password reset link.
+     *
+     * @return \Inertia\Response
+     */
+    public function showLinkRequestForm()
+    {
+        return Inertia::render('auth/passwords/Email');
+    }
+
+    /**
+     * Get the response for a successful password reset link.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string  $response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
+     */
+    protected function sendResetLinkResponse(Request $request, $response)
+    {
+        return back()->with('success', trans($response));
+    }
 }
