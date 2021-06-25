@@ -13,15 +13,21 @@
                         </v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
-            </v-list>            
-            <v-list dense nav v-if="authUser.hasAnyPermissions('view_any_students')">
-                <v-list-group prepend-icon="fas fa-users" no-action color="white"
-                              :value="$root.dynRoute.current('students.*')">
-                    <template v-slot:activator>
-                        <v-list-item-title>Élèves</v-list-item-title>
-                    </template>
-                </v-list-group>
             </v-list>
+            <v-list dense navv-if="authUser.hasAnyPermissions('view_any_students')">
+                <v-list-item link @click="$inertia.visit(route('students.index'))"
+                             :input-value="$root.dynRoute.current('students.index')">
+                    <v-list-item-icon>
+                        <v-icon>fas fa-users</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                        <v-list-item-title>
+                            Élèves
+                        </v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+            </v-list>
+
             <v-list dense nav v-if="authUser.hasAnyPermissions('view_any_users', 'view_any_logs')">
                 <v-list-group prepend-icon="fa-cogs" no-action color="white"
                               :value="$root.dynRoute.current('users.*')">

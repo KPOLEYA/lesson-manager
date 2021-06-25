@@ -21,7 +21,8 @@ class AuthUser extends JsonResource
             'username' => $this->username,
             'policies' => $this->when(auth()->check(), function() {
                 return collect([
-
+                    'view_any_students' => auth()->user()->can('viewAny', \App\Student::class),
+                    'create_student' => auth()->user()->can('create', \App\Student::class),
                 ])->filter(function($item) {return $item == true; })->keys();
             }),
         ];

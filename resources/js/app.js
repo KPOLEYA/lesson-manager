@@ -9,6 +9,7 @@ import AuthUser from "./models/AuthUser";
 import vuetify from './modules/vuetify'
 import { App, plugin } from '@inertiajs/inertia-vue'
 import { InertiaProgress } from '@inertiajs/progress'
+import store from './vuex/store';
 import VueMeta from 'vue-meta'
 import Vuelidate from 'vuelidate'
 import Vue from 'vue'
@@ -46,6 +47,7 @@ const app = document.getElementById('app')
 if(app){
     window.App = new Vue({
         vuetify,
+        store,
         metaInfo: {
             title: 'Chargement...',
             titleTemplate: '%s - Template',
