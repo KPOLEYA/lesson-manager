@@ -25,11 +25,8 @@ class Student extends JsonResource
                 return collect([
                     'view' => auth()->user()->can('view', $this->resource),
                     'update' => auth()->user()->can('update', $this->resource),
-<<<<<<< HEAD
-=======
                     'enable' => auth()->user()->can('enable', $this->resource),
                     'disable' => auth()->user()->can('disable', $this->resource),
->>>>>>> #2-Lister_les_eleves
                 ]);
             })
         ]);
