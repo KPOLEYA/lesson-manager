@@ -7,6 +7,7 @@ use App\Http\Resources\Level as LevelResource;
 use App\Level;
 use App\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class StudentController extends Controller
@@ -98,6 +99,56 @@ class StudentController extends Controller
     public function update(Request $request, Student $student)
     {
         //
+    }
+
+    /**
+     * Enable the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Student  $student
+     * @return \Illuminate\Http\Response
+     */
+    public function enable(Request $request, Student $student)
+    {
+        $this->authorize('enable',$student);
+
+        DB::beginTransaction();
+        try {
+            $student->is_active = true;
+            $student->save();
+
+            DB::commit();
+            return redirect()->route('students.index')->with('success', "Élève activé avec succès");
+        } catch (\Exception $ex) {
+            DB::rollBack();
+            logger()->error('[StudentController@enable] - ' . $ex->getMessage());
+            return redirect()->back()->with('error', "Impossible d'activer l'élève");
+        }
+    }
+
+    /**
+     * Enable the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Student  $student
+     * @return \Illuminate\Http\Response
+     */
+    public function disable(Request $request, Student $student)
+    {
+        $this->authorize('disable',$student);
+
+        DB::beginTransaction();
+        try {
+            $student->is_active = false;
+            $student->save();
+
+            DB::commit();
+            return redirect()->route('students.index')->with('success', "Élève désactivé avec succès");
+        } catch (\Exception $ex) {
+            DB::rollBack();
+            logger()->error('[StudentController@disable] - ' . $ex->getMessage());
+            return redirect()->back()->with('error', "Impossible de désactiver l'élève");
+        }
     }
 
     /**

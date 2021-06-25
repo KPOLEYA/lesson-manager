@@ -25,6 +25,8 @@ class Student extends JsonResource
                 return collect([
                     'view' => auth()->user()->can('view', $this->resource),
                     'update' => auth()->user()->can('update', $this->resource),
+                    'enable' => auth()->user()->can('enable', $this->resource),
+                    'disable' => auth()->user()->can('disable', $this->resource),
                 ]);
             })
         ]);
