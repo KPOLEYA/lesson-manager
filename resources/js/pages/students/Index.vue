@@ -26,7 +26,9 @@
                 </v-col>
             </v-row>
         </v-card-title>
-        <students-index :students="students.data" :loading="studentsLoading" :headers="headers"></students-index>
+        <students-index :students="students.data" :loading="studentsLoading" :headers="headers"
+                        @disable="disable" @enable="enable">
+        </students-index>
         <v-pagination
             v-if="students.meta"
             :disabled="studentsLoading "
@@ -77,6 +79,8 @@
                     {text: "Statut", value: 'is_actif'},
                     {text: "Actions", value: 'actions'},
                 ],
+                disableStudentLoading: false,
+                enableStudentLoading: false,
             }
         },
         methods: {
@@ -89,6 +93,32 @@
                         .catch((err) => console.log('error'))
                         .finally(() => this.studentsLoading = false);
                 }, 500);
+            },
+            disable(item) {
+                this.$confirm('Voulez-vous vraiment désactiver cet élève ?').then(res => {
+                    if(res){
+                        this.disableStudentLoading = true;
+                        this.$inertia.put(this.route('students.disable', item.id), {}, {
+                            onSuccess: () => {
+                                this.disableStudentLoading = false;
+                                this.getStudents();
+                            },
+                        })
+                    }
+                })
+            },
+            enable(item) {
+                this.$confirm('Voulez-vous vraiment activer cet élève ?').then(res => {
+                    if(res){
+                        this.enableStudentLoading = true;
+                        this.$inertia.put(this.route('students.enable', item.id), {}, {
+                            onSuccess: () => {
+                                this.enableStudentLoading = false;
+                                this.getStudents();
+                            },
+                        })
+                    }
+                })
             },
         },
         mounted() {

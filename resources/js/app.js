@@ -13,6 +13,7 @@ import store from './vuex/store';
 import VueMeta from 'vue-meta'
 import Vuelidate from 'vuelidate'
 import Vue from 'vue'
+import VuetifyConfirm from 'vuetify-confirm'
 
 
 window.Vue = require('vue');
@@ -22,6 +23,15 @@ Vue.use(plugin)
 InertiaProgress.init()
 Vue.use(VueMeta);
 Vue.use(Vuelidate)
+Vue.use(VuetifyConfirm, { vuetify,
+    buttonTrueText: 'Confirmer',
+    buttonFalseText: 'Annuler',
+    color: 'warning',
+    icon: 'fas fa-exclamation-triangle',
+    title: 'Attention',
+    width: 350,
+    property: '$confirm'
+})
 
 
 /**

@@ -29,5 +29,7 @@ Route::post('password/reset')->name('password.update')->uses('Auth\ResetPassword
 Route::middleware(['auth'])->group(function() {
     Route::get('/home', 'HomeController@index')->name('home');
 
+    Route::put('students/{student}/disable', 'studentController@disable')->name('students.disable');
+    Route::put('students/{student}/enable', 'studentController@enable')->name('students.enable');
     Route::resource('students', 'StudentController')->only(['index', 'show', 'create', 'store', 'edit', 'update']);
 });

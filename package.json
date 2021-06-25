@@ -32,6 +32,10 @@
         "vue-meta": "^2.4.0",
         "vuelidate": "^0.7.6",
         "vuetify": "^2.4.11",
+<<<<<<< HEAD
+=======
+        "vuetify-confirm": "^2.0.6",
+>>>>>>> #2-Lister_les_eleves
         "vuex": "^3.6.2"
     }
 }
