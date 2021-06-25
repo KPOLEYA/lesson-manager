@@ -11,6 +11,8 @@
 |
 */
 
+use Illuminate\Http\Resources\Json\Resource;
+
 Route::get('/', function () {
     return redirect()->route('login');
 });
@@ -26,4 +28,6 @@ Route::post('password/reset')->name('password.update')->uses('Auth\ResetPassword
 
 Route::middleware(['auth'])->group(function() {
     Route::get('/home', 'HomeController@index')->name('home');
+
+    Route::resource('students', 'StudentController')->only(['index', 'show', 'create', 'store', 'edit', 'update']);
 });
