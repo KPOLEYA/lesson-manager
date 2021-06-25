@@ -28,6 +28,24 @@
                     </template>
                     <span>Modifier</span>
                 </v-tooltip>
+                <v-tooltip v-if="item.policies.enable" bottom>
+                    <template v-slot:activator="{ on }">
+                        <v-btn icon color="primary" rounded dark v-on="on" :disabled="loading"
+                               @click="enable(item)">
+                            <v-icon small>fas fa-user-check</v-icon>
+                        </v-btn>
+                    </template>
+                    <span>Activer</span>
+                </v-tooltip>
+                <v-tooltip v-if="item.policies.disable" bottom>
+                    <template v-slot:activator="{ on }">
+                        <v-btn icon color="error" rounded dark v-on="on" :disabled="loading"
+                               @click="disable(item)">
+                            <v-icon small>fas fa-user-times</v-icon>
+                        </v-btn>
+                    </template>
+                    <span>Désactiver</span>
+                </v-tooltip>
             </template>
         </v-data-table>
     </div>
@@ -41,6 +59,14 @@
             students: Array,
             headers : Array,
         },
+        methods: {
+            disable(item) {
+                this.$emit("disable", item);
+            },
+            enable(item) {
+                this.$emit("enable", item);
+            },
+        }
     }
 </script>
 

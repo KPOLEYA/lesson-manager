@@ -57,6 +57,33 @@ class StudentPolicy
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Determine whether the user can enable the student.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Student  $student
+     * @return mixed
+     */
+    public function enable(User $user, Student $student)
+    {
+        return !$student->is_active;
+    }
+
+    /**
+     * Determine whether the user can disable the student.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Student  $student
+     * @return mixed
+     */
+    public function disable(User $user, Student $student)
+    {
+        return $student->is_active;
+    }
+
+    /**
+>>>>>>> #2-Lister_les_eleves
      * Determine whether the user can delete the student.
      *
      * @param  \App\User  $user
