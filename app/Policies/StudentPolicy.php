@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Student;
 use App\User;
+use App\Role;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class StudentPolicy
@@ -18,7 +19,7 @@ class StudentPolicy
      */
     public function viewAny(User $user)
     {
-        return true;
+        return $user->hasRole([Role::ROLE_ADMINISTRATOR]);
     }
 
     /**
@@ -30,7 +31,7 @@ class StudentPolicy
      */
     public function view(User $user, Student $student)
     {
-        return true;
+        return $user->hasRole([Role::ROLE_ADMINISTRATOR]);
     }
 
     /**
@@ -41,7 +42,7 @@ class StudentPolicy
      */
     public function create(User $user)
     {
-        return true;
+        return $user->hasRole([Role::ROLE_ADMINISTRATOR]);
     }
 
     /**
@@ -53,12 +54,10 @@ class StudentPolicy
      */
     public function update(User $user, Student $student)
     {
-        return true;
+        return $user->hasRole([Role::ROLE_ADMINISTRATOR]);
     }
 
     /**
-<<<<<<< HEAD
-=======
      * Determine whether the user can enable the student.
      *
      * @param  \App\User  $user
@@ -67,7 +66,8 @@ class StudentPolicy
      */
     public function enable(User $user, Student $student)
     {
-        return !$student->is_active;
+        return $user->hasRole([Role::ROLE_ADMINISTRATOR])
+               && !$student->is_active;
     }
 
     /**
@@ -79,11 +79,11 @@ class StudentPolicy
      */
     public function disable(User $user, Student $student)
     {
-        return $student->is_active;
+        return $user->hasRole([Role::ROLE_ADMINISTRATOR])
+               && $student->is_active;
     }
 
     /**
->>>>>>> #2-Lister_les_eleves
      * Determine whether the user can delete the student.
      *
      * @param  \App\User  $user

@@ -14,6 +14,8 @@ import VueMeta from 'vue-meta'
 import Vuelidate from 'vuelidate'
 import Vue from 'vue'
 import VuetifyConfirm from 'vuetify-confirm'
+import moment from 'moment-timezone';
+require('moment/locale/fr');
 
 
 window.Vue = require('vue');
@@ -32,6 +34,37 @@ Vue.use(VuetifyConfirm, { vuetify,
     width: 350,
     property: '$confirm'
 })
+
+Object.defineProperty(Vue.prototype, '$moment', { value: moment });
+
+Vue.filter('formatDate', function (value) {
+    if (value) {
+        return moment(String(value)).format('DD MMMM YYYY');
+    }
+});
+Vue.filter('formatDateLess', function (value) {
+    if (value) {
+        return moment(String(value)).format('DD/MM/YYYY');
+    }
+});
+Vue.filter('formatDateTime', function (value) {
+    if (value) {
+        return moment(String(value)).format('DD MMMM YYYY à HH:mm');
+    }
+});
+Vue.filter('formatMonthYear', function (value) {
+    if (value) {
+
+        value = moment(String(value)).format('MMMM YYYY ')
+        value = value.toString().charAt(0).toUpperCase() + value.slice(1) ;
+        return value;
+    }
+});
+Vue.filter('formatDateTimeLess', function (value) {
+    if (value) {
+        return moment(String(value)).format('DD/MM/YYYY HH:mm');
+    }
+});
 
 
 /**

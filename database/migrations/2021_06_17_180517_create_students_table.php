@@ -17,12 +17,13 @@ class CreateStudentsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('firstname');
+            $table->string('phone')->nullable();
             $table->unsignedBigInteger('level_id');
             $table->string('class_option')->nullable();
-            $table->string('email')->unique();
-            $table->date('date_of_birth')->nullable();
+            $table->string('email')->unique()->nullable();
+            $table->date('birth_date')->nullable();
             $table->unsignedBigInteger('parents_id')->nullable();
-            $table->boolean('is_active')->default(false);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
 
             $table->foreign('level_id')->references('id')->on('levels');
