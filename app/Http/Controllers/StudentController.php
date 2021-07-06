@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\Student as StudentResource;
 use App\Http\Resources\Level as LevelResource;
+use App\Http\Requests\Student\Store as StoreRequest;
 use App\Level;
 use App\Student;
+use App\Parents;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -53,7 +55,11 @@ class StudentController extends Controller
      */
     public function create()
     {
-        //
+        $this->authorize('create',Student::class);
+
+        return Inertia::render('students/Create', [
+            'levels' => LevelResource::collection(Level::all()),
+        ]);
     }
 
     /**
@@ -62,9 +68,36 @@ class StudentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
-        //
+        $this->authorize('create',Student::class);
+
+        DB::beginTransaction();
+        try {
+            $student = new Student($request->only(['name', 'firstname', 'birth_date',
+                    'phone', 'email', 'class_option']));
+            $student->level()->associate($request->get('level'));
+
+            if($request->boolean('add_parents')){
+                $parents = new Parents([
+                    'name' => $request->get('name_parents'),
+                    'firstname' => $request->get('firstname_parents'),
+                    'phone' => $request->get('phone_parents'),
+                    'email' => $request->get('email_parents'),
+                    ]);
+                $parents->save();
+                $student->parents()->associate($parents);
+            }
+
+            $student->save();
+
+            DB::commit();
+            return redirect()->route('students.index')->with('success', "Élève créé avec succès");
+        } catch (\Exception $ex) {
+            DB::rollBack();
+            logger()->error('[StudentController@create] - ' . $ex->getMessage());
+            return redirect()->back()->with('error', "Impossible de créer l'élève");
+        }
     }
 
     /**

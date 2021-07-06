@@ -29,6 +29,7 @@
         "@inertiajs/inertia": "^0.8.7",
         "@inertiajs/inertia-vue": "^0.5.12",
         "@inertiajs/progress": "^0.2.4",
+        "moment-timezone": "^0.5.33",
         "vue-meta": "^2.4.0",
         "vuelidate": "^0.7.6",
         "vuetify": "^2.4.11",

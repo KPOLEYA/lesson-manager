@@ -10,12 +10,12 @@
         <v-card-title>
             <v-row class="mb-2" dense>
                 <v-col cols="12" md="4">
-                    <v-text-field label="Recherche par Nom" prepend-icon="fa-search" v-model.trim="filters.name"
+                    <v-text-field label="Recherche par Nom" prepend-icon="fas fa-user" v-model.trim="filters.name"
                                   type="text" clearable
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" md="4">
-                    <v-select label="Recherche par Niveau" prepend-icon="fas fa-user" v-model.trim="filters.level"
+                    <v-select label="Recherche par Niveau" prepend-icon="fa-user-graduate" v-model.trim="filters.level"
                               type="text" clearable :items="levels.data" item-text="name" item-value="id"
                     ></v-select>
                 </v-col>

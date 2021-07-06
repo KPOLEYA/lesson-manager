@@ -17,7 +17,8 @@ class CreateParentsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('firstname');
-            $table->string('email')->unique();
+            $table->string('phone')->nullable();
+            $table->string('email')->unique()->nullable();
             $table->timestamps();
         });
     }
