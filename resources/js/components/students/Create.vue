@@ -144,7 +144,7 @@
                     birth_date: this.$props.student ? this.$props.student.birth_date : undefined,
                     phone: this.$props.student ? this.$props.student.phone : undefined,
                     email: this.$props.student ? this.$props.student.email : undefined,
-                    level: this.$props.student ? this.$props.student.level : undefined,
+                    level: this.$props.student ? this.$props.student.level.id : undefined,
                     class_option: this.$props.student ? this.$props.student.class_option : undefined,
                     add_parents: this.$props.student.parents ? true : false,
                     name_parents: this.$props.student.parents ? this.$props.student.parents.name : undefined,

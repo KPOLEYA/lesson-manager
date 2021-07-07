@@ -21,7 +21,7 @@ class StudentController extends Controller
      */
     public function index(Request $request)
     {
-        $this->authorize('viewAny',Student::class);
+        $this->authorize('viewAny', Student::class);
 
         $students = Student::with(['parents', 'level']);
 
@@ -55,7 +55,7 @@ class StudentController extends Controller
      */
     public function create()
     {
-        $this->authorize('create',Student::class);
+        $this->authorize('create', Student::class);
 
         return Inertia::render('students/Create', [
             'levels' => LevelResource::collection(Level::all()),
@@ -70,7 +70,7 @@ class StudentController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $this->authorize('create',Student::class);
+        $this->authorize('create', Student::class);
 
         DB::beginTransaction();
         try {
@@ -119,7 +119,12 @@ class StudentController extends Controller
      */
     public function edit(Student $student)
     {
-        //
+        $this->authorize('update', $student);
+
+        return Inertia::render('students/Edit', [
+            'student' => new StudentResource($student->load(['level', 'parents'])),
+            'levels' => LevelResource::collection(Level::all()),
+        ]);
     }
 
     /**
@@ -129,9 +134,46 @@ class StudentController extends Controller
      * @param  \App\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Student $student)
+    public function update(StoreRequest $request, Student $student)
     {
-        //
+        $this->authorize('update', $student);
+
+        DB::beginTransaction();
+        try {
+            $student->update($request->only(['name', 'firstname', 'birth_date',
+                    'phone', 'email', 'class_option']));
+            $student->level()->associate($request->get('level'));
+
+            if($request->boolean('add_parents')){
+                if($student->parents) {
+                    $student->parents->update([
+                        'name' => $request->get('name_parents'),
+                        'firstname' => $request->get('firstname_parents'),
+                        'phone' => $request->get('phone_parents'),
+                        'email' => $request->get('email_parents'),
+                    ]);
+                }
+                else {
+                    $parents = new Parents([
+                        'name' => $request->get('name_parents'),
+                        'firstname' => $request->get('firstname_parents'),
+                        'phone' => $request->get('phone_parents'),
+                        'email' => $request->get('email_parents'),
+                        ]);
+                    $parents->save();
+                    $student->parents()->associate($parents);
+                }
+            }
+
+            $student->save();
+
+            DB::commit();
+            return redirect()->route('students.index')->with('success', "Élève modifié avec succès");
+        } catch (\Exception $ex) {
+            DB::rollBack();
+            logger()->error('[StudentController@update] - ' . $ex->getMessage());
+            return redirect()->back()->with('error', "Impossible de modifier l'élève");
+        }
     }
 
     /**
